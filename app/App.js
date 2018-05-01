@@ -20,7 +20,7 @@ import {
   VibrationIOS,
 } from 'react-native';
 // import { StackNavigator} from 'react-navigation';
-// import DateTimePicker from 'react-native-modal-datetime-picker';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import { YellowBox } from 'react-native';
 console.disableYellowBox = true;
@@ -80,26 +80,86 @@ export default class App extends React.Component {
     clearInterval(this.Clock);
   }
 
+  handlePicker = (time) => {
+    this.setState({
+      isVisible: false,
+      chosenTime: moment(time).format('HH:mm:00')
+    });
+  }
+
+  showPicker = () => {
+    this.setState({
+      isVisible: true
+    });
+  }
+
+  hidePicker = () => {
+    this.setState({
+      isVisible: false,
+    });
+  }
+
   render() {
     return ( 
       <View style = {styles.container}>
-        {/* <Text style={
-        {
-          color: 'yellow',
-          fontSize: 60,
-          marginBottom: 50,
-        }
-        } > {this.state.chosenTime} 
-        </Text> */}
+        <Text style={
+          {
+            color: 'yellow',
+            fontSize: 60,
+            marginBottom: 50,
+          }
+          }> {this.state.chosenTime} 
+        </Text>
         <Image style = {styles.image} source = {require('./assets/clocks.png')}/> 
         <Text style={
-        {
-          color: 'yellow',
-          fontSize: 60,
-          marginBottom: 50,
-        }
-        }> {this.state.time.toString()} 
+          {
+            color: 'yellow',
+            fontSize: 60,
+            marginBottom: 50,
+          }
+          }> {this.state.time.toString()}
         </Text>
+        <TouchableOpacity style={styles.button}
+          onPress = {this.showPicker}>
+          <Text style = {styles.text}>Show TimePicker</Text>  
+        </TouchableOpacity>
+        <DateTimePicker 
+          cancelTextIOS = {
+            'Exit'
+          }
+          confirmTextIOS = {
+            'OK'
+          }
+          cancelTextStyle = {
+            {
+              color: 'red',
+              fontSize: 20,
+            }
+          }
+          confirmTextStyle = {
+            {
+              color: 'green',
+              fontSize: 20,
+            }
+          }
+          isVisible = {
+            this.state.isVisible
+          }
+          onConfirm = {
+            this.handlePicker
+          }
+          onCancel = {
+            this.hidePicker
+          }
+          mode = {
+            'time'
+          }
+          datePickerModeAndroid = {
+            'spinner'
+          }
+          is24Hour = {
+            true
+          }/>
       </View>
     );
   }
@@ -118,5 +178,20 @@ const styles = StyleSheet.create({
     height: 250,
     marginBottom: 50,
   },
+
+  button: {
+    width: 250,
+    height: 50,
+    backgroundColor: 'yellow',
+    borderRadius: 30,
+    justifyContent: 'center',
+    marginTop: 15
+  },
+
+  text: {
+    fontSize: 18,
+    color: 'black',
+    textAlign: 'center'
+  }
 });
 
