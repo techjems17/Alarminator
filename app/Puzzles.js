@@ -58,8 +58,7 @@ export default class Puzzles extends Component {
                 this.setState({
                     puzzles: puzzle.puzzle,
                     answers: puzzle.answer,
-                })
-                console.log(puzzle.puzzle);
+                });
             })
             .catch(error => {
                 console.log(error)
@@ -111,8 +110,9 @@ export default class Puzzles extends Component {
     // };
 
     updateAnswer = value => {
+        let userInput = value.toLowerCase();
         this.setState({
-            userAnswer: value,
+            userAnswer: userInput,
             incorrect: "",
         })
     };
@@ -153,17 +153,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     text: {
-        fontSize: 60,
+        fontSize: 30,
         fontWeight: 'bold',
-        // marginBottom: 50,
-        marginTop: 200,
+        marginTop: 25,
         justifyContent: 'center',
     },
     wrong: {
-        fontSize: 60,
+        fontSize: 30,
         fontWeight: 'bold',
         marginBottom: 25,
-        marginTop: 50,
+        marginTop: 30,
     },
     input: {
         fontSize: 30,
