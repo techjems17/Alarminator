@@ -26,9 +26,9 @@ export default class Puzzles extends Component {
         puzzles: [],
         userAnswer: "",
         incorrect: "",
-        shouldPlay: true,
-        isPlaying: true,
-        isLoading: false,
+        shouldPlay: false,
+        isPlaying: false,
+        isLoading: true,
         volume: 1.0,
         rate: 1.5,
     };
@@ -49,7 +49,7 @@ export default class Puzzles extends Component {
         BackHandler.addEventListener('hardwareBackPressed', () => {
             return true;
         });
-        fetch("http://localhost:3000/puzzles")
+        fetch("https://puzzle-alarm-api.herokuapp.com/puzzles")
             .then(response => {
                 return response.json()
             })
@@ -63,51 +63,57 @@ export default class Puzzles extends Component {
             .catch(error => {
                 console.log(error)
             });
-        // Audio.setAudioModeAsync({
-        //     allowsRecordingIOS: false,
-        //     interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-        //     playsInSilentModeIOS: true,
-        //     shouldDuckAndroid: true,
-        //     interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
-        // });
-        // this._loadNewPlaybackInstance(false);
+        Audio.setAudioModeAsync({
+            allowsRecordingIOS: false,
+            interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+            playsInSilentModeIOS: true,
+            shouldDuckAndroid: true,
+            interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+        });
+        this.loadSound(true);
+        if (this.soundObject != null) {
+            this.soundObject.playAsync();
+        }
+    };
+
+    async loadSound(playing) {
+        if (this.soundObject != null) {
+            await this.soundObject.unloadAsync();
+            this.soundObject.setOnPlaybackStatusUpdate(null);
+            this.soundObject = null;
+        }
+
+        const source = { uri: 'https://s3.amazonaws.com/exp-us-standard/audio/playlist-example/Podington_Bear_-_Rubber_Robot.mp3' };
+        const initialStatus = {
+            shouldPlay: playing,
+            rate: this.state.rate,
+            volume: this.state.volume,
+        };
+
+        const { sound, status } = await Audio.Sound.create(
+            source,
+            initialStatus,
+            this.update
+        );
+        this.soundObject = sound;
     }
 
-    // async _loadNewPlaybackInstance(playing) {
-    //     if (this.playbackInstance != null) {
-    //         await this.playbackInstance.unloadAsync();
-    //         this.playbackInstance.setOnPlaybackStatusUpdate(null);
-    //         this.playbackInstance = null;
-    //     }
+    update = status => {
+        if (status.isLoaded) {
+            this.setState({
+                shouldPlay: status.shouldPlay,
+                isPlaying: status.isPlaying,
+                rate: status.rate,
+                volume: status.volume,
+            });
+        }
+    };
 
-    //     const source = { uri: 'https://s3.amazonaws.com/exp-us-standard/audio/playlist-example/Podington_Bear_-_Rubber_Robot.mp3' };
-    //     const initialStatus = {
-    //         shouldPlay: playing,
-    //         rate: this.state.rate,
-    //         volume: this.state.volume,
-    //     };
-
-    //     const { sound, status } = await Audio.Sound.create(
-    //         source,
-    //         initialStatus,
-    //         this._onPlaybackStatusUpdate
-    //     );
-    //     this.playbackInstance = sound;
-    // }
-
-    // _onPlaybackStatusUpdate = status => {
-    //     if (status.isLoaded) {
-    //         this.setState({
-    //             shouldPlay: status.shouldPlay,
-    //             isPlaying: status.isPlaying,
-    //             rate: status.rate,
-    //             volume: status.volume,
-    //         });
-    //         if (status.didJustFinish) {
-    //             this._updatePlaybackInstanceForIndex(true);
-    //         }
-    //     }
-    // };
+    stopAlarm = () => {
+        if (this.soundObject != null) {
+            this.soundObject.stopAsync();
+        }
+    };
 
     updateAnswer = value => {
         let userInput = value.toLowerCase();
@@ -120,6 +126,7 @@ export default class Puzzles extends Component {
     checkAnswer = () => {
         if (this.state.userAnswer != undefined) {
             if (this.state.userAnswer == this.state.answers) {
+                this.stopAlarm();
                 return this.props.navigation.navigate('Home');
             }
             else {
@@ -156,6 +163,8 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
         marginTop: 25,
+        marginRight: 10,
+        marginLeft: 10,
         justifyContent: 'center',
     },
     wrong: {
