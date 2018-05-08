@@ -24,7 +24,7 @@ import { StackNavigator} from 'react-navigation';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import { MaterialIcons } from '@expo/vector-icons';
-import Expo, { Asset, Audio, FileSystem, Font, Permissions, Video } from 'expo';
+import Expo, { Asset, Audio, FileSystem, Font, Permissions, Video, KeepAwake } from 'expo';
 import { YellowBox } from 'react-native';
 console.disableYellowBox = true;
 
@@ -128,6 +128,7 @@ class App extends React.Component {
 
     return ( 
       <View style = {styles.container}>
+        <KeepAwake />
           <Text style={
             {
               color: '#ffff55',

@@ -17,7 +17,7 @@ import {
     TextInput
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import Expo, { Asset, Audio, FileSystem, Font, Permissions, Video } from 'expo';
+import Expo, { Asset, Audio, FileSystem, Font, Permissions, Video, KeepAwake } from 'expo';
 import { YellowBox } from 'react-native';
 console.disableYellowBox = true;
 
@@ -142,6 +142,7 @@ export default class Puzzles extends Component {
 
         return (
             <View style={styles.container}>
+                <KeepAwake />
                 <Text style={styles.text}>{this.state.puzzles}</Text>
                 <Text style={styles.wrong}>{this.state.incorrect}</Text>
                 <TextInput style={styles.input} placeholder="Add answer" value={this.state.userAnswer} onChangeText={this.updateAnswer} />
@@ -176,6 +177,8 @@ const styles = StyleSheet.create({
     input: {
         fontSize: 30,
         color: 'black',
+        marginLeft: 15,
+        marginRight: 15,
     },
     button: {
         width: 250,
