@@ -116,7 +116,7 @@ class App extends React.Component {
     this.setState({
       isVisible: false,
     });
-  }
+  } 
 
 
   render() {
@@ -133,7 +133,7 @@ class App extends React.Component {
               color: '#ffff55',
               fontSize: 60,
               marginTop: 20,
-              marginBottom: 30,
+              marginBottom: 20,
             }
             }> {this.state.chosenTime} 
           </Text>
@@ -142,13 +142,13 @@ class App extends React.Component {
             {
               color: '#ffff55',
               fontSize: 60,
-              marginBottom: 30,
+              marginBottom: 20,
             }
             }> {this.state.time.toString()}
           </Text>
           <TouchableOpacity style={styles.button}
             onPress = {this.showPicker}>
-            <Text style = {styles.text}>Show TimePicker</Text>  
+            <Text style = {styles.text}>Choose Time</Text>  
           </TouchableOpacity>
           <DateTimePicker 
             cancelTextIOS = {
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
   image: {
     width: 250,
     height: 250,
-    marginBottom: 30,
+    marginBottom: 20,
   },
 
   button: {
