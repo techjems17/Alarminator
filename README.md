@@ -3,6 +3,8 @@ The alarminator is an alarmclock app that is built to help those who have multip
 
 ![set alarm page](https://github.com/techjems17/Alarminator/blob/master/main-page.png) ![solve puzzle page](https://github.com/techjems17/Alarminator/blob/master/alarm-page.png)
 
+[link to app](https://expo.io/@techjems17/alarminator)
+
 ## Technologies
 * Frontend:
     - React Native
