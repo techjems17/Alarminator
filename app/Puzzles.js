@@ -175,10 +175,10 @@ const styles = StyleSheet.create({
         marginTop: 30,
     },
     input: {
-        fontSize: 30,
+        fontSize: 20,
         color: 'black',
-        marginLeft: 15,
-        marginRight: 15,
+        marginLeft: 10,
+        marginRight: 10,
     },
     button: {
         width: 250,

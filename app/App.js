@@ -93,6 +93,7 @@ class App extends React.Component {
       return true;
     });
     this.Clock = setInterval(() => this.getTime(), 1000);
+    Vibration.cancel();
   }
 
   componentWillUnmount() {
@@ -120,8 +121,11 @@ class App extends React.Component {
 
 
   render() {
+    const PATTERN = [1000, 2000, 3000];
+
     if (this.state.time != undefined) {
       if (this.state.chosenTime == this.state.time) {
+        Vibration.vibrate(PATTERN, true);
         return this.props.navigation.navigate('Puzzles');
       }
     }
